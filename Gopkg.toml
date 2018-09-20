@@ -211,3 +211,7 @@ ignored = [
 [[constraint]]
   name = "gopkg.in/ldap.v3"
   version = "3.0.0"
+
+[[constraint]]
+  name = "github.com/sfreiberg/gotwilio"
+  revision = "f446a6ddc88051bf1d4c1f950e8691c7f6d6364d"
