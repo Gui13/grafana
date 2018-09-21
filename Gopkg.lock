@@ -436,6 +436,12 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/sfreiberg/gotwilio"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "f446a6ddc88051bf1d4c1f950e8691c7f6d6364d"
+
+[[projects]]
   name = "github.com/smartystreets/assertions"
   packages = [
     ".",
