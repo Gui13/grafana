@@ -20,16 +20,16 @@ func init() {
       <h3 class="page-heading">Twilio settings</h3>
       <div class="gf-form">
         <span class="gf-form-label width-10">Client Id</span>
-        <input type="text" required class="gf-form-input max-width-26" ng-model="ctrl.model.settings.clientId" placeholder="Twilio client ID"></input>
+        <input type="password" required class="gf-form-input max-width-26" ng-model="ctrl.model.settings.clientId" placeholder="Twilio client ID"></input>
         <info-popover mode="right-absolute">
           You will find the client ID in your Twilio Dashboard: https://www.twilio.com/console/sms/dashboard
         </info-popover>
       </div>
       <div class="gf-form">
         <span class="gf-form-label width-10">API Token</span>
-          <input type="text" class="gf-form-input max-width-20" ng-model="ctrl.model.settings.apiToken" placeholder="Twilio API Token"></input>
+          <input type="password" class="gf-form-input max-width-20" ng-model="ctrl.model.settings.apiToken" placeholder="Twilio API Token"></input>
           <info-popover mode="right-absolute">
-            You will find the client ID in your Twilio Dashboard: https://www.twilio.com/console/sms/dashboard
+            You will find the API token in your Twilio Dashboard: https://www.twilio.com/console/sms/dashboard
           </info-popover>
       </div>
       <div class="gf-form">
@@ -126,16 +126,19 @@ func (notifier *TwilioNotifier) Notify(evalContext *alerting.EvalContext) error 
 	var errorStrings []string
 	for _, recipient := range notifier.Recipients {
 		var err error
+		var res *gotwilio.SmsResponse
 		if notifier.SendMMS {
-			notifier.log.Info(fmt.Sprintf("Sending twilio MMS notification to %v", notifier.SenderNumber))
-			_, _, err = twilio.SendMMS(from, recipient, message, evalContext.ImagePublicUrl, "", "")
+			notifier.log.Info(fmt.Sprintf("Sending twilio MMS notification to %v", recipient))
+			res, _, err = twilio.SendMMS(from, recipient, message, evalContext.ImagePublicUrl, "", "")
 		} else {
-			notifier.log.Info(fmt.Sprintf("Sending twilio SMS notification to %v", notifier.SenderNumber))
-			_, _, err = twilio.SendSMS(from, recipient, message, "", "")
+			notifier.log.Info(fmt.Sprintf("Sending twilio SMS notification to %v", recipient))
+			res, _, err = twilio.SendSMS(from, recipient, message, "", "")
 		}
 		if err != nil {
 			notifier.log.Warn(fmt.Sprintf("Failed to send notification to %v: %v", recipient, err))
 			errorStrings = append(errorStrings, err.Error())
+		} else if res != nil {
+			notifier.log.Info(fmt.Sprintf("Notification sent successfully: %v", res.Status))
 		}
 	}
 
