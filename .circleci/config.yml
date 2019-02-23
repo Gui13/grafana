@@ -11,11 +11,11 @@ jobs:
       - run:
           name: Build & tag as dev
           command: |
-            docker build . -t gui13/twilio_notifier:$CIRCLE_SHA1
-            docker tag gui13/twilio_notifier:$CIRCLE_SHA1 gui13/twilio_notifier:dev
+            docker build . -t gui13/grafana_twilio:$CIRCLE_SHA1
+            docker tag gui13/grafana_twilio:$CIRCLE_SHA1 gui13/grafana_twilio:dev
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push gui13/twilio_notifier:$CIRCLE_SHA1
-            docker push gui13/twilio_notifier:dev
+            docker push gui13/grafana_twilio:$CIRCLE_SHA1
+            docker push gui13/grafana_twilio:dev
   prod:
     machine: true
     filters:
@@ -26,12 +26,12 @@ jobs:
       - run:
           name:  Tag the dev image as prod
           command: |
-            docker pull gui13/twilio_notifier:$CIRCLE_SHA1
-            docker tag gui13/twilio_notifier:$CIRCLE_SHA1 gui13/twilio_notifier:latest
-            docker tag gui13/twilio_notifier:latest gui13/twilio_notifier:$CIRCLE_TAG
+            docker pull gui13/grafana_twilio:$CIRCLE_SHA1
+            docker tag gui13/grafana_twilio:$CIRCLE_SHA1 gui13/grafana_twilio:latest
+            docker tag gui13/grafana_twilio:latest gui13/grafana_twilio:$CIRCLE_TAG
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push gui13/twilio_notifier:latest
-            docker push gui13/twilio_notifier:$CIRCLE_TAG
+            docker push gui13/grafana_twilio:latest
+            docker push gui13/grafana_twilio:$CIRCLE_TAG
 
 
 workflows:
