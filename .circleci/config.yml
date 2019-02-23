@@ -1,16 +1,47 @@
 version: 2
 jobs:
-  build:
+  dev:
     filters:
       branches:
         only:
           - twilio_notifier
-    docker:
-      - image: docker:latest
-
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
       - run:
-          name: Greeting
-          command: docker build . -t gui13/twilio_notifier
+          name: Build & tag as dev
+          command: |
+            docker build . -t gui13/twilio_notifier:$CIRCLE_SHA1
+            docker tag gui13/twilio_notifier:$CIRCLE_SHA1 gui13/twilio_notifier:dev
+  prod:
+    machine: true
+    filters:
+      tags:
+        only: /^kdp.*/
+    steps:
+      - checkout
+      - run:
+          name:  Tag the dev image as prod
+          command: |
+            docker pull gui13/twilio_notifier:$CIRCLE_SHA1
+            docker tag gui13/twilio_notifier:$CIRCLE_SHA1 gui13/twilio_notifier:latest
+            docker tag gui13/twilio_notifier:latest gui13/twilio_notifier:$CIRCLE_TAG
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push gui13/twilio_notifier:latest
+            docker push gui13/twilio_notifier:$CIRCLE_TAG
+
+
+workflows:
+  version: 2
+  buildprod:
+    jobs:
+      - dev:
+          filters:
+            tags:
+              only: /^kdp.*/
+      - prod:
+          requires: 
+            - dev
+          filters:
+            tags:
+              only: /^kdp.*/
