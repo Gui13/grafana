@@ -125,14 +125,6 @@
   revision = "270bc3860bb94dd3a3ffd047377d746c5e276726"
 
 [[projects]]
-  digest = "1:7a6852b35eb5bbc184561443762d225116ae630c26a7c4d90546619f1e7d2ad2"
-  name = "github.com/dgrijalva/jwt-go"
-  packages = ["."]
-  pruneopts = "NUT"
-  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
-  version = "v3.2.0"
-
-[[projects]]
   branch = "master"
   name = "github.com/facebookgo/inject"
   packages = ["."]
@@ -451,7 +443,6 @@
   revision = "f446a6ddc88051bf1d4c1f950e8691c7f6d6364d"
 
 [[projects]]
-  digest = "1:1f0b284a6858827de4c27c66b49b2b25df3e16b031c2b57b7892273131e7dd2b"
   name = "github.com/smartystreets/assertions"
   packages = [
     ".",
