@@ -128,7 +128,8 @@ func (notifier *TwilioNotifier) Notify(evalContext *alerting.EvalContext) error 
 		var err error
 		var res *gotwilio.SmsResponse
 		if notifier.SendMMS {
-			notifier.log.Info(fmt.Sprintf("Sending twilio MMS notification to %v", recipient))
+			notifier.log.Info(fmt.Sprintf("Sending twilio MMS notification to %v with public image %v", recipient, 
+evalContext.ImagePublicUrl))
 			res, _, err = twilio.SendMMS(from, recipient, message, evalContext.ImagePublicUrl, "", "")
 		} else {
 			notifier.log.Info(fmt.Sprintf("Sending twilio SMS notification to %v", recipient))
